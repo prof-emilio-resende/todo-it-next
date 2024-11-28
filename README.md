@@ -533,3 +533,42 @@ function removeItem(id: number) {
 // adicinando comportament de clique ao ícone da lixeira
 <svg onClick={() => removeItem(todo.id)} className="cursor-pointer"></svg>
 ```
+# 9. Consumindo API para criar nova tarefa
+O último endpoint que vamos consumir em nosso componente de criar nova tarefa será:
+
+> POST /api/todo/
+```json
+// corpo da requisição
+{
+  "title": "Título da atividade",
+  "description": "Descrição da atividade",
+  "status": "Pendente"
+}
+```
+```typescript jsx
+// ...
+// adicionando estado
+import React, {FormEvent, useState} from "react";
+// ...
+const [title, setTitle] = useState('');
+const [description, setDescription] = useState('');
+
+// modificando comportamento para submissão do formulário
+async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (title && description) {
+        fetch("http://localhost:3000/api/todo", {
+            method: "POST",
+            headers: new Headers({'Content-Type': 'application/json'}),
+            body: JSON.stringify({title, description, status: "Pendente"}),
+        })
+            .then(() => navigation(event, '/todo'));
+    } else {
+        alert('Preencha todos os campos');
+    }
+}
+
+// monitorando mudanças nos dados dos componentes (input e textarea)
+<input onChange={(event) => setTitle(event.target.value)} />
+<textarea onChange={(event) => setDescription(event.target.value)}></textarea>
+```
