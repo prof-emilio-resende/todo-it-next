@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
+# 1. Criando projeto Next
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx create-next-app@latest todo-it-next --typescript --eslint
+```
+> vamos escolher as opções padrões (tailwind, etc)
+
+Agora vamos configurar o postcss
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+``` 
+
+Após a configuração, vamos testar se está tudo funcional:
+```bash
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Caso qualquer problema de compilação e/ou entrega do conteúdo apareça, utilizar os scritps abaixo:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> ```bash
+> npx tsc tailwind.config.ts
+> rm tailwind.config.js
+> rm -rf .next
+> npm run dev
+> ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Agora vamos alterar o arquivo app/page.tsx 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```typescript
+    export default function Home() {
+    return (
+        <h1 className="text-red-500 text-3xl"> 
+            Ola mund next! !
+        </h1>
+    )
+    ;
+}
+```
