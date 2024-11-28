@@ -508,3 +508,28 @@ function createCards() {
 </AppContainer>
 
 ```
+# 8. Consumindo a API para remover tarefas
+Vamos agora consumir um endpoint diferente que será responsável pela remoção de tarefas
+DELETE /api/todo/:id
+
+```typescript jsx
+// todo/page.tsx
+// definindo estrutura para chamada das APIs
+useEffect(() => {
+    loadItems();
+}, []);
+
+function loadItems() {
+    fetch("http://localhost:3000/api/todo")
+        .then(res => res.json())
+        .then(todos => setTodoList(todos as Array<TodoEntity>));
+}
+
+function removeItem(id: number) {
+    fetch(`http://localhost:3000/api/todo/${id}`, {method: "DELETE"})
+        .then(() => loadItems());
+}
+
+// adicinando comportament de clique ao ícone da lixeira
+<svg onClick={() => removeItem(todo.id)} className="cursor-pointer"></svg>
+```
