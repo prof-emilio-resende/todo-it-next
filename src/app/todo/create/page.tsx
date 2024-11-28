@@ -4,7 +4,7 @@ import React, {FormEvent} from "react";
 import AppContainer from "../../ui/components/app.container";
 import useNavigation from "@/app/lib/helpers";
 
-export default function Login() {
+export default function CreateTodo() {
     const navigation = useNavigation();
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
