@@ -107,7 +107,7 @@ export default function AppContainer({
 ```
 
 Conteúdo do componente de login (login/page.tsx)
-```typescript
+```typescript jsx
 // login/page.tsx
 "use client"
 
@@ -162,3 +162,108 @@ export default function Login() {
 }
 
 ```
+
+# 3. Criando componente SignUp
+
+A criação do componente de signup segue a estrutura anterior, criamos o diretório novo (nova rota) e criamos o arquivo page.tsx que vai armazenar o conteúdo desta página
+
+```bash
+mkdir app/signup
+cd app/signup
+touch page.tsx
+```
+
+```typescript jsx
+"use client"
+
+import React, {FormEvent} from "react";
+import AppContainer from "../ui/components/app.container";
+import {useRouter} from "next/navigation";
+
+export default function Login() {
+    const router = useRouter();
+
+    async function onSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        router.push("/todo")
+    }
+
+    function goToLogin(event: React.MouseEvent<HTMLButtonElement>) {
+        event.preventDefault();
+        router.push("/login")
+    }
+
+    return (
+        <AppContainer title="TODO IT" subtitle="Sign up" headline="Preencha seu e-mail e defina sua senha">
+            <form className="flex flex-col justify-center space-y-5" onSubmit={onSubmit}>
+                <input type="text" placeholder="email@domain.com"
+                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/>
+                <input type="password" placeholder="senha"
+                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/>
+                <button
+                    type="submit"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-slate-700 text-slate-100 hover:bg-slate-700/90 h-10 px-4 py-2">
+                    Criar minha conta
+                </button>
+                <button
+                    onClick={goToLogin}
+                    type="button"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-red-700 text-slate-100 hover:bg-red-700/90 h-10 px-4 py-2">
+                    Cancelar
+                </button>
+            </form>
+        </AppContainer>
+    );
+}
+
+```
+
+# 4. Criando um hook customizado para navegação
+Vamos criar um hook customizado para simplificar a navegação entre telas e reduzir a repetição de código
+```bash
+mkdir app/lib
+cd app/lib
+touch helpers.ts
+```
+```typescript
+// helpers.ts
+"use client"
+import React from "react";
+import {useRouter} from "next/navigation";
+
+export default function useNavigation() {
+    const router = useRouter();
+
+    return (event: React.SyntheticEvent, path: string) => {
+        event.preventDefault();
+        router.push(path)
+    }
+}
+```
+
+Agora com o hook criado, basta utilizá-lo em nossos components
+```typescript jsx
+// login/page.tsx
+// ...
+import useNavigation from "@/app/lib/helpers";
+// ...
+const navigation = useNavigation();
+// ...
+navigation(event, '/todo');
+// ...
+navigation(event, '/signup');
+// ...
+```
+```typescript jsx
+// signup/page.tsx
+// ...
+import useNavigation from "@/app/lib/helpers";
+// ...
+const navigation = useNavigation();
+// ...
+navigation(event, '/todo');
+// ...
+navigation(event, '/login');
+// ...
+```
+

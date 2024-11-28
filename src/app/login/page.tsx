@@ -2,19 +2,17 @@
 
 import React, { FormEvent } from "react";
 import AppContainer from "../ui/components/app.container";
-import {useRouter} from "next/navigation";
+import useNavigation from "@/app/lib/helpers";
 
 export default function Login() {
-    const router = useRouter();
+    const navigation = useNavigation();
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-        router.push("/todo")
+        navigation(event, '/todo');
     }
 
     function goToCreateAccount(event: React.MouseEvent<HTMLButtonElement>) {
-        event.preventDefault();
-        router.push("/signup")
+        navigation(event, '/signup');
     }
 
     return (
